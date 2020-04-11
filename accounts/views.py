@@ -3,9 +3,28 @@ from django.http import HttpResponse
 
 from .forms import *
 from .models import *
+from .filters import OrderFilter
 
 
 # Create your views here.
+
+
+def loginPage(request):
+
+    context = {
+
+    }
+
+    return render(request, 'accounts/login.html', context)
+
+
+def registerPage(request):
+
+    context = {
+
+    }
+
+    return render(request, 'accounts/register.html', context)
 
 
 def home(request):
@@ -40,10 +59,14 @@ def customers(request, pk):
 
     total_orders = orders.count()
 
+    myFilter = OrderFilter(request.GET, queryset=orders)
+    orders = myFilter.qs
+
     context={
         'customer':customer,
         'orders':orders,
         'total_orders':total_orders,
+        'myFilter':myFilter,
     }
 
     return render(request, "accounts/customer.html", context)
